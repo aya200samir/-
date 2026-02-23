@@ -9,12 +9,8 @@ wordcloud
 arabic-reshaper
 python-bidi
 textblob
-networkx
-streamlit-lottie
-requests
-scipy
-pillow
+PyPDF2
+openpyxl
+xlrd
 transformers
 torch
-PyPDF2
-shap
