@@ -5,3 +5,12 @@ plotly
 scikit-learn
 xgboost
 matplotlib
+wordcloud
+arabic-reshaper
+python-bidi
+textblob
+networkx
+streamlit-lottie
+requests
+scipy
+pillow
