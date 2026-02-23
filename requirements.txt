@@ -14,3 +14,7 @@ streamlit-lottie
 requests
 scipy
 pillow
+transformers
+torch
+PyPDF2
+shap
