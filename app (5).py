@@ -267,3 +267,50 @@ elif page == "📂 Smart Document Analysis":
                 
             for i, record in enumerate(data_records):
                 record["Cluster_ID"] = labels[i]
+                
+            st.session_state['processed_data'] = pd.DataFrame(data_records)
+            log_action("Analysis completed and data cached.")
+            progress_bar.empty()
+            status.success("✅ Analysis Complete! Review the AI findings below.")
+            
+            # 3. واجهة المراجعة والأدلة (Human-in-the-loop)
+            st.markdown("### 🔎 AI Evidence & Verification Panel")
+            df = st.session_state['processed_data']
+            
+            for idx, row in df.iterrows():
+                with st.expander(f"📄 {row['File_Name']} | Cluster: {row['Cluster_ID']} | Risk: {row['Risk_Score']}%"):
+                    c1, c2 = st.columns([1, 2])
+                    with c1:
+                        st.metric("Estimated Fine", f"£{row['Target_Fine_GBP']:,}")
+                        st.markdown(f"**MFA Violation:** {'<span class="badge-critical">Yes</span>' if row['MFA_Violation'] else '<span class="badge-safe">No</span>'}", unsafe_allow_html=True)
+                        st.markdown(f"**Children Data:** {'<span class="badge-critical">Yes</span>' if row['Children_Violation'] else '<span class="badge-safe">No</span>'}", unsafe_allow_html=True)
+                    with c2:
+                        st.markdown("**⚖️ Legal AI Evidence Extracted:**")
+                        if row['MFA_Evidence']:
+                            st.markdown(f"<div class='evidence-box'><b>MFA Context:</b> {row['MFA_Evidence']}</div>", unsafe_allow_html=True)
+                        if row['Children_Evidence']:
+                            st.markdown(f"<div class='evidence-box'><b>Privacy Context:</b> {row['Children_Evidence']}</div>", unsafe_allow_html=True)
+                        if not row['MFA_Evidence'] and not row['Children_Evidence']:
+                            st.info("No critical violations detected in text matching parameters.")
+            
+            st.markdown("### ✍️ Final Gold Dataset Verification")
+            editor_cols = ["File_Name", "Cluster_ID", "Risk_Score", "Target_Fine_GBP", "MFA_Violation", "Children_Violation"]
+            edited_df = st.data_editor(df[editor_cols], use_container_width=True, num_rows="dynamic")
+            
+            csv = edited_df.to_csv(index=False).encode('utf-8')
+            st.download_button("⬇️ Export Secure Gold Dataset (CSV)", data=csv, file_name='Enterprise_ICO_Dataset.csv', mime='text/csv', type="primary")
+
+# ------------------------------------------
+# الصفحة 3: Audit Logs (سجل التدقيق للأمان)
+# ------------------------------------------
+elif page == "📋 Audit & Compliance Logs":
+    st.markdown("### 🔒 System Access & Activity Logs (SOC2 Requirement)")
+    st.markdown("All activities within the Lumina AI platform are cryptographically logged to ensure non-repudiation and compliance.")
+    
+    if st.session_state['audit_log']:
+        log_df = pd.DataFrame(st.session_state['audit_log'])
+        st.dataframe(log_df, use_container_width=True)
+        
+        st.download_button("📥 Download Audit Trail (PDF/CSV)", data=log_df.to_csv(index=False).encode('utf-8'), file_name='Audit_Trail.csv', mime='text/csv')
+    else:
+        st.info("No activities logged in the current session.")
