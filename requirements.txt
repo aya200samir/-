@@ -1,9 +1,11 @@
 streamlit
 pandas
 numpy
-transformers
-torch
-scikit-learn
-pymupdf
+PyMuPDF
 python-docx
+torch
+transformers
+scikit-learn
 plotly
+xgboost
+joblib
