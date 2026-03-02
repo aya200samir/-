@@ -1,4 +1,4 @@
-streamlit>=1.32.0
+streamlit
 pandas
 numpy
 transformers
@@ -6,3 +6,4 @@ torch
 scikit-learn
 pymupdf
 python-docx
+plotly
