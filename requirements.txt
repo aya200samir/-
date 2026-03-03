@@ -1,12 +1,8 @@
-fastapi
-uvicorn
-python-multipart
-PyMuPDF
-python-docx
+streamlit
 pandas
 numpy
 xgboost
 scikit-learn
 joblib
-transformers
-torch
+PyMuPDF
+python-docx
